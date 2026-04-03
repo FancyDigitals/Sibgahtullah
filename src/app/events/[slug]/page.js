@@ -1,12 +1,15 @@
+"use client";
 
 import { useState } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function EventDetailPage({ params }) {
+export default function EventDetailPage() {
+  const params = useParams();
+
   const [isSaved, setIsSaved] = useState(false);
   const { slug } = params;
-  const [isRegistering, setIsRegistering] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [showForm, setShowForm] = useState(false);
 const [formData, setFormData] = useState({
@@ -421,26 +424,14 @@ Event: ${event.title}`;
                 </div>
 
                 <button 
-                  onClick={() => setIsRegistering(true)}
-                  className="w-full bg-gradient-to-r from-gold to-yellow-600 text-black py-4 rounded-lg font-bold text-base hover:shadow-[0_0_30px_rgba(245,166,35,0.5)] transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 mb-3"
-                >
-                  {isRegistering ? (
-                    <>
-                      <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      <span>Processing...</span>
-                    </>
-                  ) : (
-                    <>
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span>Register Now</span>
-                    </>
-                  )}
-                </button>
+  onClick={() => setShowForm(true)}
+  className="w-full bg-gradient-to-r from-gold to-yellow-600 text-black py-4 rounded-lg font-bold text-base hover:shadow-[0_0_30px_rgba(245,166,35,0.5)] transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 mb-3"
+>
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+  <span>Register Now</span>
+</button>
 
                 <button className="w-full border-2 border-gold/50 text-gold py-3 rounded-lg font-semibold hover:bg-gold hover:text-black transition-all duration-300 text-sm">
                   Add to Calendar
@@ -516,7 +507,7 @@ Event: ${event.title}`;
       {/* FLOATING CTA - Mobile Only */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-dark/95 backdrop-blur-xl border-t border-gold/20 p-4 z-40 shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
         <button 
-          onClick={() => setIsRegistering(true)}
+          onClick={() => setShowForm(true)}
           className="w-full bg-gradient-to-r from-gold to-yellow-600 text-black py-4 rounded-lg font-bold hover:shadow-[0_0_25px_rgba(245,166,35,0.5)] transition-all flex items-center justify-center gap-2"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
