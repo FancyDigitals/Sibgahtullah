@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styling */
+body {
+  @apply bg-primary text-white font-sans;
+}
+
+/* Smooth look */
+section {
+  @apply relative;
+}
