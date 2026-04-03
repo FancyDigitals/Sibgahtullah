@@ -1,19 +1,13 @@
-import "./globals.css";
-import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
+import type { ReactNode } from "react";
 
-export const metadata = {
-  title: "SIBGAHTULLAH",
-};
-
-export default function RootLayout({ children }) {
+export default function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   return (
-    <html>
-      <body>
-        <Navbar />
-        {children}
-        <Footer />
-      </body>
+    <html lang="en">
+      <body>{children}</body>
     </html>
   );
 }
