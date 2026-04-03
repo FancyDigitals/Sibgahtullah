@@ -194,7 +194,7 @@ export default function LecturesPage() {
   />
 ) : (
   <img
-    src={getThumbnail(lecture.videoId, lecture.platform)}
+    src={getThumbnail(lecture.videoId, lecture.platform) || "/fallback.jpg"}
     alt={lecture.title}
     className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
   />
