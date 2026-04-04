@@ -60,14 +60,6 @@ export default function Programs() {
 
       <div className="max-w-6xl mx-auto px-6 text-center relative z-10">
 
-        {/* Section Badge */}
-        <div className={`inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-purple-500/30 bg-purple-500/10 mb-6 transition-all duration-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
-          <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
-          <span className="text-purple-400 text-xs md:text-sm font-medium tracking-wider uppercase">
-            What We Offer
-          </span>
-        </div>
-
         {/* Heading */}
         <h2 className="text-4xl md:text-5xl font-bold text-gold">
           <span className={`inline-block transition-all duration-700 delay-100 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
@@ -167,26 +159,6 @@ export default function Programs() {
         {/* Bottom Section */}
         <div className={`mt-16 transition-all duration-700 delay-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           
-          {/* Stats Row */}
-          <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-10">
-            {[
-              { icon: "👨‍🎓", value: "8,700+", label: "Enrolled Students" },
-              { icon: "📖", value: "50+", label: "Courses Available" },
-              { icon: "🌍", value: "30+", label: "Countries Reached" },
-            ].map((stat, index) => (
-              <div 
-                key={stat.label}
-                className="flex items-center gap-3 px-4 md:px-5 py-3 bg-gray-800/30 rounded-xl border border-gray-700/50"
-              >
-                <span className="text-xl md:text-2xl">{stat.icon}</span>
-                <div className="text-left">
-                  <div className="text-base md:text-lg font-bold text-white">{stat.value}</div>
-                  <div className="text-xs text-gray-500">{stat.label}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-
           {/* CTA Button */}
           <a 
             href="/programs"
@@ -197,21 +169,6 @@ export default function Programs() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </a>
-
-          {/* Trust Text */}
-          <p className="mt-6 text-gray-500 text-xs md:text-sm flex items-center justify-center gap-2">
-            <span className="flex -space-x-2">
-              {['👨‍🎓', '👩‍🎓', '🧕', '👨‍💼'].map((emoji, i) => (
-                <span 
-                  key={i} 
-                  className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-gray-800 border-2 border-primary flex items-center justify-center text-xs"
-                >
-                  {emoji}
-                </span>
-              ))}
-            </span>
-            <span>Join thousands of students on their journey</span>
-          </p>
         </div>
 
       </div>

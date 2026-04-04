@@ -56,7 +56,9 @@ export default function FeaturedLectures() {
                   src={
                     lecture.platform === "local"
                       ? lecture.thumbnail
-                      : getThumbnail(lecture.videoId)
+                      : lecture.platform === "youtube" && lecture.videoId
+  ? getThumbnail(lecture.videoId)
+  : lecture.thumbnail
                   }
                   alt={lecture.title}
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
@@ -94,7 +96,7 @@ export default function FeaturedLectures() {
                 </h3>
 
                 <p className="text-sm text-gray-500 mt-1">
-                  {lecture.description || "No description available"}
+                  {lecture.desc || "No description available"}
                 </p>
 
                 {/* Button */}

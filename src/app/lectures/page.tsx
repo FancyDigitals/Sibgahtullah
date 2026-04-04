@@ -55,11 +55,6 @@ export default function LecturesPage() {
         <div className="max-w-4xl mx-auto px-6">
 
           {/* Decorative Badge */}
-          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/30 bg-gold/10 mb-8 transition-all duration-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
-            <span className="text-xl">🎬</span>
-            <span className="text-gold text-sm font-medium tracking-wider uppercase">Video Library</span>
-          </div>
-
           <h1 className="text-5xl md:text-6xl font-bold text-gold">
             <span className={`inline-block transition-all duration-700 delay-100 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
               Lectures
@@ -71,22 +66,6 @@ export default function LecturesPage() {
               Explore powerful teachings designed to inspire knowledge and strengthen faith.
             </span>
           </p>
-
-          {/* Stats */}
-          <div className={`mt-10 flex flex-wrap justify-center gap-8 transition-all duration-700 delay-300 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <div className="flex items-center gap-2 text-gray-400">
-              <span className="text-2xl">📚</span>
-              <span>{lectures.length} Lectures</span>
-            </div>
-            <div className="flex items-center gap-2 text-gray-400">
-              <span className="text-2xl">👨‍🏫</span>
-              <span>6 Scholars</span>
-            </div>
-            <div className="flex items-center gap-2 text-gray-400">
-              <span className="text-2xl">⏱️</span>
-              <span>2+ Hours</span>
-            </div>
-          </div>
 
         </div>
       </section>

@@ -72,7 +72,7 @@ export default function Navbar() {
 
               <div className="flex flex-col">
                 <span className="text-xs sm:text-sm font-bold text-gold tracking-wide">
-                  SIBGAHTULLAH
+                  SIBGAHTULLAH ISLAMIC FOUNDATION
                 </span>
                 <span className="text-[10px] sm:text-xs text-gray-400 -mt-1 hidden xs:block">
                   Islamic Foundation
