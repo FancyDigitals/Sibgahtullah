@@ -14,12 +14,9 @@ export default function LecturesPage() {
   }, []);
 
   // Get YouTube thumbnail URL
-  const getThumbnail = (videoId: string, platform: string) => {
-    if (platform === "youtube") {
-      return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-    }
-    return null;
-  };
+  const getThumbnail = (videoId: string): string => {
+  return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+};
 
   // Filter lectures based on search and category
   const filteredLectures = lectures.filter((lecture) => {
@@ -162,22 +159,18 @@ export default function LecturesPage() {
               >
 
                 {/* Thumbnail */}
-                <div className="h-48 bg-gray-800 relative overflow-hidden">
+<div className="h-48 bg-gray-800 relative overflow-hidden">
 
-                  {/* Video Thumbnail */}
-                  {lecture.platform === "local" ? (
+  {/* Video Thumbnail */}
   <img
-    src={lecture.thumbnail}
+    src={
+      lecture.platform === "youtube" && lecture.videoId
+        ? getThumbnail(lecture.videoId)
+        : lecture.thumbnail || "/fallback.jpg"
+    }
     alt={lecture.title}
     className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
   />
-) : (
-  <img
-    src={getThumbnail(lecture.videoId, lecture.platform) || "/fallback.jpg"}
-    alt={lecture.title}
-    className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-  />
-)}
 
                   {/* Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-dark via-transparent to-transparent" />
