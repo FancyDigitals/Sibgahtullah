@@ -14,6 +14,7 @@ export default function LecturesPage() {
   }, []);
 
   // Get YouTube thumbnail URL
+  // redeploy trigger
   const getThumbnail = (videoId: string): string => {
   return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 };
