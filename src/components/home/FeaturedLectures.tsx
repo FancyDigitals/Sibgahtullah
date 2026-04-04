@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import Container from "../ui/Container";
 import { lectures, type Lecture } from "@/data/lectures";
@@ -55,11 +56,14 @@ export default function FeaturedLectures() {
 
                 {/* Thumbnail */}
                 <div className="h-48 relative overflow-hidden">
-                  <img
-                    src={imageSrc}
-                    alt={lecture.title}
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
+                  <Image
+  src={imageSrc}
+  alt={lecture.title}
+  fill
+  sizes="(max-width: 768px) 100vw, 33vw"
+  priority={index === 0}
+  className="object-cover group-hover:scale-110 transition-transform duration-700"
+/>
 
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
