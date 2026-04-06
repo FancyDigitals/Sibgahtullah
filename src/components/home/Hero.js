@@ -4,7 +4,7 @@ export default function Hero() {
 
       {/* 🎥 BACKGROUND VIDEO */}
       <video
-        className="absolute inset-0 w-full h-full object-cover"
+  className="absolute inset-0 w-full h-full object-cover pointer-events-none"
         src="/videos/hero.mp4"
         autoPlay
         loop
@@ -13,7 +13,7 @@ export default function Hero() {
       />
 
       {/* 🔥 DARK OVERLAY (important for readability) */}
-      <div className="absolute inset-0 bg-black/60"></div>
+      <div className="absolute inset-0 bg-black/60 pointer-events-none"></div>
 
       {/* ✨ CONTENT */}
       <div className="relative z-10 max-w-6xl mx-auto px-6">
