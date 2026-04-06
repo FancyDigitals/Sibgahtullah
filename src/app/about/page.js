@@ -44,7 +44,7 @@ export default function AboutPage() {
   {
     id: 3,
     name: "MuhammedBashir Ismail (FANCY)",
-    position: "CEO Fancy Digitals",
+    position: "Educator",
     image: "/team/fancy.jpg",
     socials: {
       facebook: "#",
@@ -397,14 +397,6 @@ export default function AboutPage() {
             <button className="mt-8 border border-gold/50 text-gold px-6 py-3 rounded-lg font-semibold hover:bg-gold/10 transition">
               Contact Us
             </button>
-          </div>
-
-          {/* Trust Indicators */}
-          <div className="mt-16 pt-8 border-t border-gray-800">
-            <p className="text-gray-500 text-sm mb-4">Recognized & Trusted Worldwide</p>
-            <div className="flex justify-center gap-6 text-2xl opacity-50">
-              🌍 🕌 📚 🎓 ✨
-            </div>
           </div>
 
         </div>

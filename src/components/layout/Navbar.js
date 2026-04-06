@@ -32,12 +32,12 @@ export default function Navbar() {
   }, [isOpen]);
 
   const navLinks = [
-    { name: "Home", href: "/", icon: "🏠" },
-    { name: "About", href: "/about", icon: "ℹ️" },
-    { name: "Lectures", href: "/lectures", icon: "📚" },
-    { name: "Events", href: "/events", icon: "📅" },
-    { name: "Blog", href: "/blog", icon: "✍️" },
-    { name: "Help", href: "/help", icon: "💬" },
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about", },
+    { name: "Lectures", href: "/lectures", },
+    { name: "Events", href: "/events", },
+    { name: "Blog", href: "/blog", },
+    { name: "Help", href: "/help", },
   ];
 
   return (

@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 export default function DonationCTA() {
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(0);
   const [showForm, setShowForm] = useState(false);
 const [formType, setFormType] = useState("donation");
 const [formData, setFormData] = useState({
