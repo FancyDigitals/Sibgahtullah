@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import events from "@/data/events";
 import Image from "next/image";
 
 export default function EventDetailPage() {
@@ -18,42 +19,14 @@ const [formData, setFormData] = useState({
   phone: "",
 });
 
-  // Mock data - replace with actual data fetching
-  const event = {
-    title: "Faith Conference 2026",
-    slug: slug,
-    organizer: "Sibgahtullah Islamic Foundation",
-    description: `This transformative conference brings together individuals seeking knowledge, growth, 
-    and spiritual development. Experience powerful lectures from renowned scholars, engage in meaningful 
-    discussions, and connect with a vibrant community of like-minded believers.
-    
-    Our Faith Conference is designed to strengthen your understanding of Islam, provide practical guidance 
-    for daily life, and inspire you to be a positive force in your community.`,
-    location: "Eko Convention Centre, Lagos, Nigeria",
-    date: "March 30, 2026",
-    time: "10:00 AM - 6:00 PM",
-    speaker: "Sheikh Abdullah Rahman",
-    category: "Conference",
-    capacity: "500 attendees",
-    registered: "247",
-    price: "Free",
-    highlights: [
-      "5+ renowned Islamic scholars",
-      "Interactive Q&A sessions",
-      "Networking opportunities",
-      "Free refreshments & materials",
-      "Certificate of attendance",
-      "Live streaming available"
-    ],
-    schedule: [
-      { time: "10:00 AM", activity: "Registration & Welcome" },
-      { time: "11:00 AM", activity: "Opening Keynote - Faith in Modern Times" },
-      { time: "1:00 PM", activity: "Lunch Break & Networking" },
-      { time: "2:30 PM", activity: "Panel Discussion - Youth & Islam" },
-      { time: "4:00 PM", activity: "Workshop Sessions" },
-      { time: "5:30 PM", activity: "Closing Remarks & Dua" },
-    ]
-  };
+  const event = events.find((e) => e.slug === slug);
+  if (!event) {
+  return (
+    <div className="min-h-screen flex items-center justify-center text-white">
+      Event not found
+    </div>
+  );
+}
 
   const handleShare = (platform) => {
     const url = window.location.href;
@@ -260,9 +233,9 @@ Event: ${event.title}`;
       </section>
 
       {/* MAIN CONTENT */}
-      <section className="py-12">
+      <section className="py-12 pb-32">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-8 items-start">
 
             {/* LEFT COLUMN - Main Content */}
             <div className="lg:col-span-2 space-y-8">
@@ -296,7 +269,7 @@ Event: ${event.title}`;
                 </h2>
 
                 <div className="prose prose-invert max-w-none">
-                  {event.description.split('\n\n').map((paragraph, index) => (
+                  {(event.description || "").split('\n\n').map((paragraph, index) => (
                     <p key={index} className="text-gray-300 leading-relaxed mb-4">
                       {paragraph}
                     </p>
@@ -310,7 +283,7 @@ Event: ${event.title}`;
                   What to Expect
                 </h3>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  {event.highlights.map((highlight, index) => (
+                  {(event.highlights || []).map((highlight, index) => (
                     <div 
                       key={index} 
                       className="flex items-start gap-3 bg-primary/30 border border-gold/10 rounded-lg p-4 hover:border-gold/30 transition"
@@ -332,7 +305,7 @@ Event: ${event.title}`;
                   Event Schedule
                 </h3>
                 <div className="space-y-4">
-                  {event.schedule.map((item, index) => (
+  {(event.schedule || []).map((item, index) => (
                     <div 
                       key={index}
                       className="flex gap-4 pb-4 border-b border-gray-800 last:border-0 last:pb-0"
@@ -356,7 +329,7 @@ Event: ${event.title}`;
             <div className="space-y-6">
 
               {/* Registration Card - Sticky */}
-              <div className="lg:sticky lg:top-24 bg-gradient-to-br from-dark to-dark/50 border-2 border-gold/30 rounded-2xl p-6 shadow-[0_0_40px_rgba(245,166,35,0.15)]">
+              <div className="lg:sticky lg:top-24 self-start bg-gradient-to-br from-dark to-dark/50 border-2 border-gold/30 rounded-2xl p-6 shadow-[0_0_40px_rgba(245,166,35,0.15)]">
                 
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-xl font-bold text-gold">

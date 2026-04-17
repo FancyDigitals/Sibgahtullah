@@ -3,86 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import events from "@/data/events";
 
 export default function EventsPage() {
   const [filter, setFilter] = useState("all");
   const [viewMode, setViewMode] = useState("grid"); // grid or list
-
-  const events = [
-    {
-      slug: "faith-conference-2026",
-      title: "Faith Conference 2026",
-      desc: "A powerful gathering focused on strengthening faith and clarity.",
-      location: "Lagos, Nigeria",
-      date: "March 30, 2026",
-      time: "10:00 AM",
-      category: "Conference",
-      attendees: "500+",
-      status: "upcoming",
-      featured: true,
-    },
-    {
-      slug: "youth-empowerment",
-      title: "Youth Empowerment Summit",
-      desc: "Equipping young Muslims with purpose, discipline, and direction.",
-      location: "Abuja, Nigeria",
-      date: "April 12, 2026",
-      time: "12:00 PM",
-      category: "Summit",
-      attendees: "300+",
-      status: "upcoming",
-      featured: false,
-    },
-    {
-      slug: "knowledge-series",
-      title: "Knowledge Series",
-      desc: "Weekly sessions focused on deep Islamic teachings.",
-      location: "Online",
-      date: "Every Friday",
-      time: "6:00 PM",
-      category: "Weekly",
-      attendees: "200+",
-      status: "recurring",
-      featured: false,
-    },
-    {
-      slug: "ramadan-special",
-      title: "Ramadan Special Program",
-      desc: "Daily reminders and reflections throughout Ramadan.",
-      location: "Ibadan, Nigeria",
-      date: "Ramadan 2026",
-      time: "After Maghrib",
-      category: "Special",
-      attendees: "1000+",
-      status: "upcoming",
-      featured: true,
-    },
-    {
-      slug: "community-outreach",
-      title: "Community Outreach",
-      desc: "Supporting communities through education and charity.",
-      location: "Kano, Nigeria",
-      date: "May 5, 2026",
-      time: "9:00 AM",
-      category: "Outreach",
-      attendees: "150+",
-      status: "upcoming",
-      featured: false,
-    },
-    {
-      slug: "leadership-training",
-      title: "Leadership Training",
-      desc: "Developing strong Muslim leaders for the future.",
-      location: "Online",
-      date: "June 2026",
-      time: "TBA",
-      category: "Training",
-      attendees: "100+",
-      status: "upcoming",
-      featured: false,
-    },
-  ];
-
+  
   const filteredEvents = events.filter((event) => {
     if (filter === "all") return true;
     return event.status === filter;
