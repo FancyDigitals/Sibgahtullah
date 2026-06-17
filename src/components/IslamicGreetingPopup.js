@@ -9,6 +9,8 @@ export default function IslamicGreetingPopup() {
   const [method, setMethod] = useState("email");
   const [value, setValue] = useState("");
   const [message, setMessage] = useState(null);
+const [isLoading, setIsLoading] = useState(false);
+const [isSubscribed, setIsSubscribed] = useState(false);
 
   useEffect(() => {
     const dismissed = localStorage.getItem("islamic-popup-closed");
@@ -28,61 +30,39 @@ export default function IslamicGreetingPopup() {
     setShow(false);
   };
 
-  const sendReminderSubscription = async () => {
+const sendReminderSubscription = async () => {
   if (!value) {
-    alert("Please enter your email address.");
+    toast.error("Please enter your email address.");
     return;
   }
 
+  setIsLoading(true);
+
   try {
     const response = await emailjs.send(
-  "service_mbhb50r",
-  "template_4mb7gy4",
-  {
-    name: "Sibgahtullah Islamic Foundation",
-    to_email: value,
-  },
-  "CHEs7TgQbRs_Y4mB2"
-);
+      "service_mbhb50r",
+      "template_4mb7gy4",
+      {
+        name: "Sibgahtullah Islamic Foundation",
+        to_email: value,
+      },
+      "CHEs7TgQbRs_Y4mB2"
+    );
 
-console.log("EMAILJS SUCCESS:", response);
+    console.log("EMAILJS SUCCESS:", response);
 
-    toast.custom((t) => (
-  <div
-    className={`${
-      t.visible ? "animate-enter" : "animate-leave"
-    } max-w-md w-full bg-dark border border-gold/30 shadow-2xl rounded-3xl p-5`}
-  >
-    <p className="text-gold text-lg text-center">
-      السلام عليكم ورحمة الله وبركاته
-    </p>
-
-    <h3 className="mt-3 text-white font-bold text-xl text-center">
-      Welcome to the Sibgahtullah Circle of Remembrance
-    </h3>
-
-    <p className="mt-3 text-gray-300 text-center text-sm leading-relaxed">
-      May Allah bless your journey and reward you abundantly.
-      Please check your email for your welcome message.
-    </p>
-
-    <div className="mt-4 text-center text-gold">
-      🌙 Barakallahu Feek 🌙
-    </div>
-  </div>
-));
+    setIsLoading(false);
+    setIsSubscribed(true);
 
     localStorage.setItem("islamic-popup-closed", "true");
-
-    setShow(false);
   } catch (error) {
+    setIsLoading(false);
+
     console.error("EMAILJS ERROR:", error);
 
-    setMessage({
-  type: "error",
-  title: "Subscription Failed",
-  text: "Please try again in a few moments."
-});
+    toast.error(
+      "Unable to complete subscription. Please try again."
+    );
   }
 };
 
@@ -111,6 +91,62 @@ console.log("EMAILJS SUCCESS:", response);
 
     </div>
   )
+}
+
+if (isSubscribed) {
+  return (
+    <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+
+      <div className="w-full max-w-md bg-dark border border-gold/20 rounded-3xl p-10 text-center">
+
+        <div className="w-24 h-24 mx-auto rounded-full bg-gold/10 flex items-center justify-center">
+
+          <svg
+            className="w-12 h-12 text-gold"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+
+        </div>
+
+        <p className="mt-8 text-gold text-lg">
+          السلام عليكم ورحمة الله وبركاته
+        </p>
+
+        <h2 className="mt-4 text-3xl font-bold text-white">
+          Welcome to the Circle of Remembrance
+        </h2>
+
+        <p className="mt-6 text-gray-400 leading-relaxed">
+          Your journey of daily remembrance, beneficial knowledge,
+          and spiritual growth has begun.
+        </p>
+
+        <p className="mt-4 text-gray-500">
+          Please check your inbox.
+        </p>
+<button
+  onClick={() => {
+    setIsSubscribed(false);
+    setShow(false);
+  }}
+  className="mt-8 w-full bg-gold text-black py-4 rounded-xl font-bold hover:opacity-90 transition"
+>
+  Continue
+</button>
+
+      </div>
+
+    </div>
+  );
 }
 
   if (!show) return null;
@@ -231,12 +267,21 @@ console.log("EMAILJS SUCCESS:", response);
           </div>
 
           {/* Button */}
-          <button
+<button
   onClick={sendReminderSubscription}
-  className="mt-8 w-full bg-gold text-black py-4 rounded-xl font-bold hover:opacity-90 transition"
+  disabled={isLoading}
+  className="mt-8 w-full bg-gold text-black py-4 rounded-xl font-bold transition disabled:opacity-70"
 >
-  Join the Circle of Remembrance
+  {isLoading ? (
+    <div className="flex items-center justify-center gap-3">
+      <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+      Sending...
+    </div>
+  ) : (
+    "Join the Circle of Remembrance"
+  )}
 </button>
+
 
           {/* Quote */}
           <div className="mt-8 pt-6 border-t border-gray-800">

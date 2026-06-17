@@ -1,10 +1,10 @@
 export default function Hero() {
   return (
-    <section className="relative h-[90vh] flex items-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center overflow-hidden">
 
-      {/* 🎥 BACKGROUND VIDEO */}
+      {/* Background Video */}
       <video
-  className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
         src="/videos/hero.mp4"
         autoPlay
         loop
@@ -12,31 +12,43 @@ export default function Hero() {
         playsInline
       />
 
-      {/* 🔥 DARK OVERLAY (important for readability) */}
-      <div className="absolute inset-0 bg-black/60 pointer-events-none"></div>
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black/65"></div>
 
-      {/* ✨ CONTENT */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6">
+      {/* Content */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8">
 
-        <h1 className="text-5xl md:text-6xl font-bold leading-tight text-gold">
-          Knowledge. Faith. Transformation.
-        </h1>
+        <div className="max-w-3xl">
 
-        <p className="mt-6 text-lg text-gray-300 max-w-xl">
-          Sibgahtullah Islamic Foundation blends timeless revelation with modern understanding.
-        </p>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-gold">
+            Knowledge.
+            <br />
+            Faith.
+            <br />
+            Transformation.
+          </h1>
 
-        <div className="mt-8 flex gap-4">
-          <button className="bg-gold text-black px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition">
-            Explore Lectures
-          </button>
+          <p className="mt-6 text-base sm:text-lg text-gray-300 leading-relaxed max-w-xl">
+            Sibgahtullah Islamic Foundation blends timeless revelation
+            with modern understanding.
+          </p>
 
-          <button className="border border-gold text-gold px-6 py-3 rounded-lg hover:bg-gold hover:text-black transition">
-            Upcoming Events
-          </button>
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+
+            <button className="bg-gold text-black px-7 py-4 rounded-xl font-semibold hover:opacity-90 transition">
+              Explore Lectures
+            </button>
+
+            <button className="border border-gold text-gold px-7 py-4 rounded-xl hover:bg-gold hover:text-black transition">
+              Upcoming Events
+            </button>
+
+          </div>
+
         </div>
 
       </div>
+
     </section>
   );
 }
