@@ -92,20 +92,6 @@ export default function AboutPage() {
             </span>
           </p>
 
-          {/* Stats Row */}
-          <div className={`mt-12 flex flex-wrap justify-center gap-8 md:gap-16 transition-all duration-700 delay-300 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            {[
-              { value: "10K+", label: "Students" },
-              { value: "50+", label: "Scholars" },
-              { value: "30+", label: "Countries" },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-3xl font-bold text-gold">{stat.value}</div>
-                <div className="text-gray-500 text-sm mt-1">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-
         </div>
       </section>
 

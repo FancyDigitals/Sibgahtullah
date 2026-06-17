@@ -4,6 +4,7 @@ import Hero from "../components/home/Hero";
 import AboutPreview from "../components/home/AboutPreview";
 import Pillars from "../components/home/Pillars";
 import UpcomingEvents from "../components/home/UpcomingEvents";
+import WeeklyInspiration from "../components/home/WeeklyInspiration";
 
 // Lazy-loaded components (NO ssr: false)
 const FeaturedLectures = dynamic(
@@ -61,6 +62,7 @@ export default function Home() {
       {/* Lazy-loaded sections */}
       <FeaturedLectures />
       <FeaturedVideo />
+      <WeeklyInspiration />
       <UpcomingEvents />
       <Programs />
       <DonationCTA />

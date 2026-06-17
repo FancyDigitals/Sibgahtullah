@@ -11,3 +11,44 @@ body {
 section {
   @apply relative;
 }
+
+/* Premium popup scrollbar */
+
+.popup-scrollbar {
+  scrollbar-width: auto;
+  scrollbar-color: #F5A623 rgba(255,255,255,0.05);
+}
+
+/* Chrome, Edge, Safari */
+.popup-scrollbar::-webkit-scrollbar {
+  width: 14px;
+}
+
+.popup-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.04);
+  border-radius: 999px;
+}
+
+.popup-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to bottom,
+    #F8C15C,
+    #F5A623,
+    #D68A00
+  );
+  border-radius: 999px;
+  border: 3px solid #0A0014;
+}
+
+.popup-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    to bottom,
+    #FFD27A,
+    #F5A623,
+    #C97C00
+  );
+}
+
+.popup-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
