@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function Pillars() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -13,156 +14,181 @@ export default function Pillars() {
   const pillars = [
     {
       title: "Knowledge",
-      desc: "Rooted in authentic Islamic teachings and intellectual depth.",
+      desc: "Rooted in authentic Islamic teachings and guided by clarity, depth, and understanding.",
       icon: "📚",
-      color: "from-purple-500 to-purple-700",
-      lightColor: "purple",
     },
     {
       title: "Faith",
-      desc: "Strengthening spiritual connection and unwavering belief.",
+      desc: "Strengthening spiritual connection, sincerity, and unwavering belief in every season of life.",
       icon: "🕌",
-      color: "from-purple-600 to-purple-800",
-      lightColor: "purple",
     },
     {
       title: "Community",
-      desc: "Building a united and impactful global Muslim community.",
+      desc: "Building a united and compassionate Muslim community with meaningful local and global impact.",
       icon: "👥",
-      color: "from-purple-500 to-purple-700",
-      lightColor: "purple",
     },
     {
       title: "Transformation",
-      desc: "Empowering individuals to grow, lead, and influence the world.",
+      desc: "Empowering individuals to grow in character, lead with purpose, and influence the world for good.",
       icon: "✨",
-      color: "from-purple-600 to-purple-800",
-      lightColor: "purple",
     },
   ];
 
   return (
-    <section className="py-24 bg-dark">
-      
-      {/* Decorative Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Gradient Orbs */}
-        <div className="absolute top-0 left-1/4 w-64 md:w-96 h-64 md:h-96 bg-purple-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-64 md:w-96 h-64 md:h-96 bg-purple-500/10 rounded-full blur-3xl" />
-        
-        {/* Grid Pattern */}
-        <svg className="absolute inset-0 w-full h-full opacity-[0.03]">
-          <pattern id="pillars-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="1"/>
+    <section className="relative overflow-hidden bg-white py-24 sm:py-28">
+      {/* Ambient background */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-20 top-10 h-72 w-72 rounded-full bg-[#F3E8FF] opacity-70 blur-3xl" />
+        <div className="absolute right-0 bottom-10 h-72 w-72 rounded-full bg-[#FFF5D9] opacity-60 blur-3xl" />
+
+        <svg className="absolute inset-0 h-full w-full opacity-[0.04] text-[#7C3AED]">
+          <pattern
+            id="pillars-grid"
+            width="42"
+            height="42"
+            patternUnits="userSpaceOnUse"
+          >
+            <path
+              d="M 42 0 L 0 0 0 42"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+            />
           </pattern>
           <rect width="100%" height="100%" fill="url(#pillars-grid)" />
         </svg>
 
-        {/* Floating Decorative Elements */}
-        <div className="hidden md:block absolute top-20 right-20 w-3 h-3 rounded-full bg-purple-500/30 animate-pulse" />
-        <div className="hidden md:block absolute bottom-32 left-20 w-2 h-2 rounded-full bg-purple-500/40 animate-pulse" style={{ animationDelay: '0.5s' }} />
-        <div className="hidden md:block absolute top-1/2 right-32 w-4 h-4 rounded-full bg-purple-500/20 animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#D4A017]/30 to-transparent" />
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 text-center relative z-10">
-
+      <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-8">
         {/* Heading */}
-        <h2 className="text-4xl md:text-5xl font-bold text-gold">
-          <span className={`inline-block transition-all duration-700 delay-100 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            Our Core Pillars
-          </span>
-        </h2>
+        <div className="mx-auto max-w-3xl text-center">
 
-        <p className="mt-4 text-gray-400 max-w-2xl mx-auto">
-          <span className={`inline-block text-sm md:text-base transition-all duration-700 delay-200 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            The foundation of everything we do is built on these guiding principles.
-          </span>
-        </p>
+          <h2 className="mt-6 text-4xl font-semibold tracking-tight text-[#3B136B] sm:text-5xl lg:text-6xl">
+            <span
+              className={`inline-block transition-all duration-700 delay-100 ${
+                isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+              }`}
+            >
+              Our Core Pillars
+            </span>
+          </h2>
 
-        {/* Decorative Line */}
-        <div className={`flex justify-center mt-8 transition-all duration-700 delay-300 ${isLoaded ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'}`}>
-          <div className="flex items-center gap-2">
-            <div className="w-8 md:w-12 h-[2px] bg-gradient-to-r from-transparent to-purple-500/50" />
-            <div className="w-2 h-2 rounded-full bg-purple-500/50" />
-            <div className="w-8 md:w-12 h-[2px] bg-gradient-to-l from-transparent to-purple-500/50" />
+          <p className="mt-5 text-base leading-7 text-[#6F618A] sm:text-lg sm:leading-8">
+            <span
+              className={`inline-block transition-all duration-700 delay-200 ${
+                isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+              }`}
+            >
+              The foundation of everything we do is built on principles that
+              nurture faith, deepen understanding, and inspire meaningful lives.
+            </span>
+          </p>
+
+          <div
+            className={`mt-8 flex justify-center transition-all duration-700 delay-300 ${
+              isLoaded ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <div className="h-[2px] w-10 bg-gradient-to-r from-transparent to-[#5B21B6]/40 sm:w-14" />
+              <div className="h-2 w-2 rounded-full bg-[#D4A017]" />
+              <div className="h-[2px] w-10 bg-gradient-to-l from-transparent to-[#5B21B6]/40 sm:w-14" />
+            </div>
           </div>
         </div>
 
         {/* Cards */}
-        <div className="mt-16 grid sm:grid-cols-2 md:grid-cols-4 gap-8">
-
+        <div className="mt-16 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {pillars.map((pillar, index) => (
             <div
-              key={index}
-              className="group relative bg-primary border border-gray-800 rounded-2xl p-6 text-left hover:border-gold transition duration-300"
+              key={pillar.title}
+              className="group relative rounded-[1.75rem] border border-[#EEE7FA] bg-white/85 p-6 shadow-[0_20px_50px_rgba(76,29,149,0.08)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 hover:border-[#E8D7A8] hover:shadow-[0_24px_60px_rgba(76,29,149,0.12)]"
               style={{
-                transform: isLoaded ? 'translateY(0)' : 'translateY(30px)',
+                transform: isLoaded ? "translateY(0)" : "translateY(28px)",
                 opacity: isLoaded ? 1 : 0,
-                transition: `all 0.6s ease ${index * 100 + 300}ms`
+                transition: `all 0.6s ease ${index * 100 + 250}ms`,
               }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
-              {/* Glow effect */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-300 bg-gold/5 blur-2xl rounded-2xl"></div>
+              {/* subtle glow */}
+              <div className="absolute inset-0 rounded-[1.75rem] bg-[radial-gradient(circle_at_top_right,rgba(212,160,23,0.10),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(91,33,182,0.08),transparent_35%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-              {/* Corner Accent */}
-              <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden rounded-tr-2xl pointer-events-none">
-                <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              {/* number */}
+              <div className="absolute right-5 top-5 flex h-8 w-8 items-center justify-center rounded-full border border-[#F2E8D0] bg-[#FFF9EC] text-xs font-semibold text-[#C89B3C]">
+                0{index + 1}
               </div>
 
-              {/* Icon */}
-              <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br ${pillar.color} flex items-center justify-center text-2xl md:text-3xl mb-5 shadow-lg shadow-purple-500/20 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
+              {/* icon */}
+              <div className="relative mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-[#F1EAFB] bg-gradient-to-br from-[#FAF7FF] via-white to-[#FFF8EA] text-3xl shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:rotate-2">
                 {pillar.icon}
               </div>
 
-              {/* Number Badge */}
-              <div className="absolute top-4 right-4 w-6 h-6 md:w-7 md:h-7 rounded-full bg-gray-800/80 border border-gray-700 flex items-center justify-center">
-                <span className="text-xs text-gray-500 font-medium">0{index + 1}</span>
-              </div>
-
-              <h3 className="text-xl font-semibold text-gold relative">
+              <h3 className="relative text-xl font-semibold text-[#3B136B]">
                 {pillar.title}
               </h3>
 
-              <p className="mt-3 text-gray-400 text-sm relative leading-relaxed">
+              <p className="relative mt-3 text-sm leading-7 text-[#6F618A]">
                 {pillar.desc}
               </p>
 
-              {/* Progress Line */}
-              <div className="mt-5 w-full h-1 bg-gray-800 rounded-full overflow-hidden">
-                <div 
-                  className={`h-full bg-gradient-to-r ${pillar.color} rounded-full transition-all duration-700`}
-                  style={{ width: hoveredIndex === index ? '100%' : '0%' }}
+              {/* progress */}
+              <div className="relative mt-6 h-1.5 w-full overflow-hidden rounded-full bg-[#F3EDF9]">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-[#5B21B6] via-[#7C3AED] to-[#D4A017] transition-all duration-700"
+                  style={{ width: hoveredIndex === index ? "100%" : "28%" }}
                 />
               </div>
 
-              {/* Hover Arrow */}
-              <div className="mt-4 flex items-center gap-2 text-purple-400 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                <span className="text-xs font-medium">Learn more</span>
-                <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              {/* footer */}
+              <div className="relative mt-5 flex items-center gap-2 text-sm font-medium text-[#7C3AED] opacity-80 transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#4C1D95]">
+                <span>Learn more</span>
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
                 </svg>
               </div>
-
             </div>
           ))}
-
         </div>
 
-        {/* CTA Button */}
-        <div className={`mt-12 transition-all duration-700 delay-800 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <a 
+        {/* CTA */}
+        <div
+          className={`mt-12 text-center transition-all duration-700 delay-700 ${
+            isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+          }`}
+        >
+          <Link
             href="/about"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-purple-500/25 active:scale-95 transition-all group"
+            className="inline-flex items-center gap-2 rounded-2xl bg-[#4C1D95] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(76,29,149,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3B136B]"
           >
             <span>Discover Our Mission</span>
-            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            <svg
+              className="h-5 w-5 transition-transform group-hover:translate-x-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
             </svg>
-          </a>
+          </Link>
         </div>
-
       </div>
     </section>
   );

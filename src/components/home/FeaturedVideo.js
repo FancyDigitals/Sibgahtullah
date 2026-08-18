@@ -7,7 +7,6 @@ export default function FeaturedVideo() {
   const [showTranscript, setShowTranscript] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [showControls, setShowControls] = useState(true);
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -15,325 +14,435 @@ export default function FeaturedVideo() {
   }, []);
 
   const handlePlayClick = () => {
-  if (!videoRef.current) return;
-
-  if (isPlaying) {
-    videoRef.current.pause();
-  } else {
-    videoRef.current.play();
-  }
-
-  setIsPlaying(!isPlaying);
-};
-
-  const handleVideoClick = () => {
-    setShowControls(true);
-    setTimeout(() => setShowControls(false), 3000);
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+    } else {
+      videoRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
   };
-  return (
-    <section className="py-24 bg-primary">
-      
-      {/* Decorative Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-0 w-64 md:w-96 h-64 md:h-96 bg-gold/5 rounded-full blur-3xl -translate-x-1/2" />
-        <div className="absolute bottom-1/4 right-0 w-64 md:w-96 h-64 md:h-96 bg-gold/5 rounded-full blur-3xl translate-x-1/2" />
-      </div>
 
-      <div className="max-w-6xl mx-auto px-6 text-center">
+  const switchLang = (code, e) => {
+    e.stopPropagation();
+    if (!videoRef.current) return;
+    const tracks = videoRef.current.textTracks;
+    for (let i = 0; i < tracks.length; i++) {
+      tracks[i].mode = "disabled";
+    }
+    const track = [...tracks].find((t) => t.language === code);
+    if (track) track.mode = "showing";
+    setCurrentLang(code);
+  };
 
-
-        {/* Heading */}
-        <h2 className="text-4xl md:text-5xl font-bold text-gold">
-          <span className={`inline-block transition-all duration-700 delay-100 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            Featured Lecture
-          </span>
-        </h2>
-
-        <p className="mt-4 text-gray-400 max-w-2xl mx-auto">
-          <span className={`inline-block text-sm md:text-base px-4 md:px-0 transition-all duration-700 delay-200 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            Watch a powerful session that inspires knowledge, faith, and transformation.
-          </span>
-        </p>
-
-        {/* Video Stats - Mobile Optimized */}
-
-        {/* Video */}
-        <div className={`mt-8 md:mt-16 relative rounded-xl md:rounded-2xl overflow-hidden border border-gray-800 shadow-xl transition-all duration-700 delay-400 ${isLoaded ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'}`}>
-
-          {/* Glow */}
-          <div className="absolute inset-0 bg-gold/10 blur-3xl opacity-30"></div>
-
-          {/* Decorative Corner Accents */}
-          <div className="absolute top-0 left-0 w-16 md:w-24 h-16 md:h-24 border-l-2 border-t-2 border-gold/30 rounded-tl-xl md:rounded-tl-2xl pointer-events-none z-10" />
-          <div className="absolute top-0 right-0 w-16 md:w-24 h-16 md:h-24 border-r-2 border-t-2 border-gold/30 rounded-tr-xl md:rounded-tr-2xl pointer-events-none z-10" />
-          <div className="absolute bottom-0 left-0 w-16 md:w-24 h-16 md:h-24 border-l-2 border-b-2 border-gold/30 rounded-bl-xl md:rounded-bl-2xl pointer-events-none z-10" />
-          <div className="absolute bottom-0 right-0 w-16 md:w-24 h-16 md:h-24 border-r-2 border-b-2 border-gold/30 rounded-br-xl md:rounded-br-2xl pointer-events-none z-10" />
-
-          <div
-  className="relative w-full max-w-4xl mx-auto aspect-video"
-  onClick={handleVideoClick}
->
-            
-            {/* Custom Thumbnail Overlay - Mobile Touch Friendly */}
-            {!isPlaying && (
-              <div 
-                className="absolute inset-0 z-20 cursor-pointer group"
-                onClick={handlePlayClick}
-              >
-                {/* Thumbnail Image Placeholder */}
-                <div className="absolute inset-0">
-  <video
-    className="w-full h-full object-cover"
-    muted
-    playsInline
-    preload="metadata"
-  >
-    <source src="/videos/featured2.mp4" type="video/mp4" />
-  </video>
-
-  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
-</div>
-
-<div className="absolute bottom-4 right-4 z-30 flex gap-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg border border-gray-700">
-  {[
+  const languages = [
     { code: "en", label: "EN" },
     { code: "ha", label: "HA" },
     { code: "yo", label: "YO" },
     { code: "ig", label: "IG" },
-  ].map((lang) => (
-    <button
-      key={lang.code}
-      onClick={(e) => {
-        e.stopPropagation();
+  ];
 
-        const tracks = videoRef.current.textTracks;
+  const infoCards = [
+    {
+      emoji: "👨‍🏫",
+      label: "Speaker",
+      value: "Imam Abdul-Wajuud Abdul-Lateef Adeleke",
+    },
+    { emoji: "📖", label: "Topic", value: "Spiritual Growth" },
+    { emoji: "🎬", label: "Series", value: "Foundations of Faith" },
+  ];
 
-        for (let i = 0; i < tracks.length; i++) {
-          tracks[i].mode = "disabled";
-        }
+  return (
+    <section className="relative overflow-hidden bg-white py-24 sm:py-28">
+      {/* Ambient background */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-20 top-20 h-72 w-72 rounded-full bg-[#F3E8FF] opacity-70 blur-3xl" />
+        <div className="absolute bottom-10 right-0 h-72 w-72 rounded-full bg-[#FFF5D9] opacity-60 blur-3xl" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#D4A017]/30 to-transparent" />
+      </div>
 
-        const track = [...tracks].find(t => t.language === lang.code);
-        if (track) track.mode = "showing";
+      <div className="relative z-10 mx-auto max-w-6xl px-6 sm:px-8">
+        {/* Heading */}
+        <div className="mx-auto max-w-3xl text-center">
+          <div
+            className={`inline-flex items-center gap-2 rounded-full border border-[#E9DDFD] bg-[#FAF7FF] px-4 py-2 text-sm font-medium text-[#6B21A8] shadow-sm transition-all duration-700 ${
+              isLoaded
+                ? "translate-y-0 opacity-100"
+                : "translate-y-6 opacity-0"
+            }`}
+          >
+            <span className="h-2 w-2 rounded-full bg-[#D4A017]" />
+            Watch and reflect
+          </div>
 
-        setCurrentLang(lang.code);
-      }}
-      className={`px-2 py-1 text-xs rounded-md transition ${
-        currentLang === lang.code
-          ? "bg-gold text-black"
-          : "text-white hover:bg-white/10"
-      }`}
-    >
-      {lang.label}
-    </button>
-  ))}
-</div>
+          <h2 className="mt-6 text-4xl font-semibold tracking-tight text-[#3B136B] sm:text-5xl lg:text-6xl">
+            <span
+              className={`inline-block transition-all duration-700 delay-100 ${
+                isLoaded
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-8 opacity-0"
+              }`}
+            >
+              Featured Lecture
+            </span>
+          </h2>
 
-                {/* Play Button - Larger for Mobile */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="relative">
-                    {/* Ripple Effect */}
-                    <div className="absolute inset-0 w-20 h-20 md:w-24 md:h-24 rounded-full bg-gold/30 animate-ping" />
-                    <div className="absolute inset-0 w-20 h-20 md:w-24 md:h-24 rounded-full bg-gold/20 animate-pulse" style={{ animationDelay: '0.5s' }} />
-                    
-                    {/* Main Button */}
-                    <button className="relative w-20 h-20 md:w-24 md:h-24 rounded-full bg-gold flex items-center justify-center shadow-lg shadow-gold/30 transform transition-all duration-300 group-hover:scale-110 group-active:scale-95">
-                      <svg className="w-8 h-8 md:w-10 md:h-10 text-black ml-1" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
+          <p className="mt-5 text-base leading-7 text-[#6F618A] sm:text-lg sm:leading-8">
+            <span
+              className={`inline-block transition-all duration-700 delay-200 ${
+                isLoaded
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-8 opacity-0"
+              }`}
+            >
+              A powerful session that inspires knowledge, strengthens faith, and
+              guides transformation.
+            </span>
+          </p>
 
-                {/* Video Info Overlay - Mobile Optimized */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
-                  <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-                    <div className="text-left">
-                      <h3 className="text-lg md:text-2xl font-bold text-white mb-1 md:mb-2 line-clamp-2">
+          <div
+            className={`mt-8 flex justify-center transition-all duration-700 delay-300 ${
+              isLoaded ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <div className="h-[2px] w-10 bg-gradient-to-r from-transparent to-[#5B21B6]/40 sm:w-14" />
+              <div className="h-2 w-2 rounded-full bg-[#D4A017]" />
+              <div className="h-[2px] w-10 bg-gradient-to-l from-transparent to-[#5B21B6]/40 sm:w-14" />
+            </div>
+          </div>
+        </div>
+
+        {/* Video Frame */}
+        <div
+          className={`mx-auto mt-12 max-w-5xl transition-all duration-700 delay-400 sm:mt-16 ${
+            isLoaded
+              ? "translate-y-0 opacity-100 scale-100"
+              : "translate-y-8 opacity-0 scale-95"
+          }`}
+        >
+          <div className="relative">
+            <div className="absolute -inset-5 rounded-[2.5rem] bg-[radial-gradient(circle_at_top_left,rgba(91,33,182,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(212,160,23,0.16),transparent_35%)] blur-2xl" />
+
+            <div className="relative rounded-[2rem] border border-[#E9DDFD] bg-white/85 p-3 shadow-[0_25px_80px_rgba(76,29,149,0.14)] backdrop-blur-xl">
+              {/* Frame bar */}
+              <div className="flex items-center gap-2 px-2 pb-3">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#E9DDFD]" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#F3E8FF]" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#F6E7B8]" />
+                <span className="ml-auto text-xs font-medium text-[#8C7AAE]">
+                  Featured Session
+                </span>
+              </div>
+
+              <div className="relative aspect-video overflow-hidden rounded-[1.5rem] bg-[#F7F3FF]">
+                {/* Thumbnail overlay */}
+                {!isPlaying && (
+                  <div
+                    className="absolute inset-0 z-20 cursor-pointer"
+                    onClick={handlePlayClick}
+                  >
+                    <video
+                      className="h-full w-full object-cover"
+                      muted
+                      playsInline
+                      preload="metadata"
+                    >
+                      <source src="/videos/featured2.mp4" type="video/mp4" />
+                    </video>
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1F0D36]/70 via-[#1F0D36]/15 to-transparent" />
+
+                    {/* Play button */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="relative">
+                        <div className="absolute inset-0 h-20 w-20 animate-ping rounded-full bg-white/20 md:h-24 md:w-24" />
+                        <button className="relative flex h-20 w-20 items-center justify-center rounded-full border border-white/30 bg-white/20 shadow-2xl backdrop-blur-md transition-transform duration-300 hover:scale-110 active:scale-95 md:h-24 md:w-24">
+                          <svg
+                            className="ml-1 h-8 w-8 text-white md:h-10 md:w-10"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Bottom info */}
+                    <div className="absolute bottom-4 left-4 right-20 z-30 sm:bottom-6 sm:left-6">
+                      <h3 className="line-clamp-2 text-lg font-semibold text-white sm:text-2xl">
                         The Path to Spiritual Enlightenment
                       </h3>
-                      <p className="text-gray-400 text-xs md:text-sm line-clamp-1 md:line-clamp-none">
+                      <p className="mt-1 line-clamp-1 text-sm text-white/70">
                         A comprehensive guide to strengthening your faith
                       </p>
                     </div>
+
+                    {/* Top actions */}
+                    <div className="absolute left-4 top-4 z-30 flex gap-2 sm:left-6 sm:top-6">
+                      <button className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/25 text-white backdrop-blur-md transition hover:bg-black/40">
+                        <svg
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                          />
+                        </svg>
+                      </button>
+                      <button className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/25 text-white backdrop-blur-md transition hover:bg-black/40">
+                        <svg
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
 
-                {/* Top Info Bar - Mobile Optimized */}
-                <div className="absolute top-0 left-0 right-0 p-3 md:p-4 flex justify-between items-start">
-                  <div className="flex gap-2">
-                    <button className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/70 transition-colors">
-                      <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                      </svg>
+                {/* Language switcher */}
+                <div className="absolute bottom-4 right-4 z-30 flex gap-1.5 rounded-full border border-white/20 bg-black/30 px-2.5 py-1.5 backdrop-blur-md sm:bottom-6 sm:right-6">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={(e) => switchLang(lang.code, e)}
+                      className={`rounded-full px-2.5 py-1 text-[11px] font-semibold transition ${
+                        currentLang === lang.code
+                          ? "bg-white text-[#3B136B]"
+                          : "text-white/80 hover:bg-white/10"
+                      }`}
+                    >
+                      {lang.label}
                     </button>
-                    <button className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/70 transition-colors">
-                      <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                      </svg>
-                    </button>
-                  </div>
+                  ))}
                 </div>
-              </div>
-            )}
 
-            <video
-  ref={videoRef}
-  className="w-full h-full object-cover"
-  playsInline
-  preload="metadata"
-  controls={isPlaying}
->
-  <source src="/videos/featured2.mp4" type="video/mp4" />
-
-  <track src="/subtitles/sibgahtullah.en.vtt" kind="subtitles" srcLang="en" label="English" default />
-<track src="/subtitles/sibgahtullah.ha.vtt" kind="subtitles" srcLang="ha" label="Hausa" />
-<track src="/subtitles/sibgahtullah.yo.vtt" kind="subtitles" srcLang="yo" label="Yoruba" />
-<track src="/subtitles/sibgahtullah.ig.vtt" kind="subtitles" srcLang="ig" label="Igbo" />
-</video>
-          </div>
-
-        </div>
-
-        {/* Action Buttons - Mobile Optimized Stack */}
-        <div className={`mt-6 md:mt-10 flex flex-col sm:flex-row justify-center gap-3 md:gap-4 px-4 md:px-0 transition-all duration-700 delay-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <button
-  onClick={() => {
-    const link = document.createElement("a");
-    link.href = "/videos/featured2.mp4";
-    link.download = "featured-lecture.mp4";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }}
-  className="flex items-center justify-center gap-2 px-6 py-3 md:py-3.5 bg-gold text-black rounded-xl font-semibold hover:opacity-90 active:scale-95 transition-all"
->
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
-            <span className="text-sm md:text-base">Download</span>
-          </button>
-          <button
-  onClick={async () => {
-    const shareData = {
-      title: "Featured Lecture",
-      text: "Watch this powerful lecture",
-      url: window.location.href,
-    };
-
-    try {
-      if (navigator.share) {
-        await navigator.share(shareData);
-      } else {
-        await navigator.clipboard.writeText(shareData.url);
-        alert("Link copied to clipboard!");
-      }
-    } catch (err) {
-      console.log("Share failed:", err);
-    }
-  }}
-  className="flex items-center justify-center gap-2 px-6 py-3 md:py-3.5 border border-gold/50 text-gold rounded-xl font-semibold hover:bg-gold/10 active:scale-95 transition-all"
->
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-            </svg>
-            <span className="text-sm md:text-base">Share</span>
-          </button>
-          <button
-  onClick={() => setShowTranscript(true)}
-  className="flex items-center justify-center gap-2 px-6 py-3 md:py-3.5 border border-gray-700 text-gray-300 rounded-xl font-semibold hover:bg-gray-800/50 active:scale-95 transition-all"
->
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
-            <span className="text-sm md:text-base">Transcript</span>
-          </button>
-        </div>
-        {showTranscript && (
-  <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-6">
-    <div className="bg-dark max-w-2xl w-full rounded-xl p-6 relative border border-gray-800">
-      
-      <button
-        onClick={() => setShowTranscript(false)}
-        className="absolute top-4 right-4 text-gray-400 hover:text-white"
-      >
-        ✕
-      </button>
-
-      <h3 className="text-2xl font-bold text-gold mb-4">
-        Transcript
-      </h3>
-
-      <div className="text-gray-300 text-sm leading-relaxed max-h-[60vh] overflow-y-auto space-y-4">
-        <p>
-          In this lecture, we explore the path to spiritual enlightenment...
-        </p>
-        <p>
-          True growth begins when you align your heart with purpose...
-        </p>
-        <p>
-          Faith is not just belief, it is action and consistency...
-        </p>
-      </div>
-    </div>
-  </div>
-)}
-
-        {/* Quick Info Cards - Mobile Scroll */}
-        <div className={`mt-8 md:mt-12 overflow-x-auto pb-4 -mx-6 px-6 md:mx-0 md:px-0 transition-all duration-700 delay-600 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="flex md:grid md:grid-cols-3 gap-4 min-w-max md:min-w-0">
-            
-            {/* Speaker Card */}
-            <div className="w-64 md:w-auto bg-dark border border-gray-800 rounded-xl p-4 md:p-5 text-left hover:border-gold/30 transition-colors">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-gold/20 flex items-center justify-center text-2xl shrink-0">
-                  👨‍🏫
-                </div>
-                <div className="min-w-0">
-                  <p className="text-gray-500 text-xs">Speaker</p>
-                  <p className="text-gold font-semibold truncate">Imam Abdul-Wajuud Abdul-Lateef Adeleke</p>
-                </div>
+                {/* Main video */}
+                <video
+                  ref={videoRef}
+                  className="h-full w-full object-cover"
+                  playsInline
+                  preload="metadata"
+                  controls={isPlaying}
+                >
+                  <source src="/videos/featured2.mp4" type="video/mp4" />
+                  <track
+                    src="/subtitles/sibgahtullah.en.vtt"
+                    kind="subtitles"
+                    srcLang="en"
+                    label="English"
+                    default
+                  />
+                  <track
+                    src="/subtitles/sibgahtullah.ha.vtt"
+                    kind="subtitles"
+                    srcLang="ha"
+                    label="Hausa"
+                  />
+                  <track
+                    src="/subtitles/sibgahtullah.yo.vtt"
+                    kind="subtitles"
+                    srcLang="yo"
+                    label="Yoruba"
+                  />
+                  <track
+                    src="/subtitles/sibgahtullah.ig.vtt"
+                    kind="subtitles"
+                    srcLang="ig"
+                    label="Igbo"
+                  />
+                </video>
               </div>
             </div>
-
-            {/* Topic Card */}
-            <div className="w-64 md:w-auto bg-dark border border-gray-800 rounded-xl p-4 md:p-5 text-left hover:border-gold/30 transition-colors">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-gold/20 flex items-center justify-center text-2xl shrink-0">
-                  📖
-                </div>
-                <div className="min-w-0">
-                  <p className="text-gray-500 text-xs">Topic</p>
-                  <p className="text-gold font-semibold truncate">Spiritual Growth</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Series Card */}
-            <div className="w-64 md:w-auto bg-dark border border-gray-800 rounded-xl p-4 md:p-5 text-left hover:border-gold/30 transition-colors">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-gold/20 flex items-center justify-center text-2xl shrink-0">
-                  🎬
-                </div>
-                <div className="min-w-0">
-                  <p className="text-gray-500 text-xs">Part of Series</p>
-                  <p className="text-gold font-semibold truncate">Foundations of Faith</p>
-                </div>
-              </div>
-            </div>
-
           </div>
         </div>
 
-        {/* Mobile Swipe Indicator */}
-        <div className="mt-2 flex justify-center gap-1 md:hidden">
-          <div className="w-8 h-1 rounded-full bg-gold/50" />
-          <div className="w-2 h-1 rounded-full bg-gray-700" />
-          <div className="w-2 h-1 rounded-full bg-gray-700" />
+        {/* Action Buttons */}
+        <div
+          className={`mt-8 flex flex-col justify-center gap-3 sm:flex-row sm:mt-10 transition-all duration-700 delay-500 ${
+            isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+          }`}
+        >
+          <button
+            onClick={() => {
+              const link = document.createElement("a");
+              link.href = "/videos/featured2.mp4";
+              link.download = "featured-lecture.mp4";
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }}
+            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#4C1D95] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(76,29,149,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3B136B]"
+          >
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+              />
+            </svg>
+            <span>Download</span>
+          </button>
+
+          <button
+            onClick={async () => {
+              const shareData = {
+                title: "Featured Lecture",
+                text: "Watch this powerful lecture",
+                url: window.location.href,
+              };
+              try {
+                if (navigator.share) {
+                  await navigator.share(shareData);
+                } else {
+                  await navigator.clipboard.writeText(shareData.url);
+                  alert("Link copied to clipboard!");
+                }
+              } catch (err) {
+                console.log("Share failed:", err);
+              }
+            }}
+            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#E9DDFD] bg-white px-6 py-3.5 text-sm font-semibold text-[#4C1D95] transition-all duration-300 hover:border-[#D4A017]/50 hover:text-[#5B21B6] hover:shadow-sm"
+          >
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+              />
+            </svg>
+            <span>Share</span>
+          </button>
+
+          <button
+            onClick={() => setShowTranscript(true)}
+            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#E9DDFD] bg-white px-6 py-3.5 text-sm font-semibold text-[#4C1D95] transition-all duration-300 hover:border-[#D4A017]/50 hover:text-[#5B21B6] hover:shadow-sm"
+          >
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+              />
+            </svg>
+            <span>Transcript</span>
+          </button>
         </div>
 
+        {/* Info Cards */}
+        <div
+          className={`mt-10 transition-all duration-700 delay-600 sm:mt-14 ${
+            isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+          }`}
+        >
+          <div className="grid gap-4 sm:grid-cols-3">
+            {infoCards.map((card) => (
+              <div
+                key={card.label}
+                className="group flex items-center gap-4 rounded-[1.75rem] border border-[#EEE7FA] bg-white/85 p-5 shadow-[0_12px_30px_rgba(76,29,149,0.06)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#E8D7A8] hover:shadow-[0_16px_40px_rgba(76,29,149,0.10)]"
+              >
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-[#F3E7BF] bg-[#FFF9EC] text-2xl shadow-sm">
+                  {card.emoji}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C89B3C]">
+                    {card.label}
+                  </p>
+                  <p className="mt-1 truncate text-sm font-semibold text-[#3B136B]">
+                    {card.value}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
+
+      {/* Transcript Modal */}
+      {showTranscript && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#2B0F46]/20 p-6 backdrop-blur-sm">
+          <div className="relative w-full max-w-2xl rounded-[2rem] border border-[#E9DDFD] bg-white p-8 shadow-[0_30px_80px_rgba(76,29,149,0.18)]">
+            <button
+              onClick={() => setShowTranscript(false)}
+              className="absolute right-6 top-6 flex h-10 w-10 items-center justify-center rounded-full border border-[#F1EAFB] text-[#7A63A8] transition-colors hover:text-[#4C1D95]"
+            >
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#F0E2B6] bg-[#FFF9EC] text-xl shadow-sm">
+                📝
+              </div>
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C89B3C]">
+                  Full text
+                </p>
+                <h3 className="text-xl font-semibold text-[#3B136B]">
+                  Transcript
+                </h3>
+              </div>
+            </div>
+
+            <div className="mt-6 max-h-[55vh] space-y-4 overflow-y-auto text-sm leading-7 text-[#6F618A]">
+              <p>
+                In this lecture, we explore the path to spiritual
+                enlightenment...
+              </p>
+              <p>
+                True growth begins when you align your heart with purpose...
+              </p>
+              <p>
+                Faith is not just belief, it is action and consistency...
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
-
-    
   );
 }
