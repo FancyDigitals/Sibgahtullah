@@ -1,262 +1,334 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
+const navLinks = [
+  { name: "Home", href: "/" },
+  { name: "About", href: "/about" },
+  { name: "Lectures", href: "/lectures" },
+  { name: "Events", href: "/events" },
+  { name: "Blog", href: "/blog" },
+  { name: "Help", href: "/help" },
+  { name: "Contact", href: "/contact" },
+];
+
+const linkDescriptions = {
+  Home: "Welcome and latest updates",
+  About: "Our story and mission",
+  Lectures: "Talks and teachings",
+  Events: "Programs and gatherings",
+  Blog: "Articles and reflections",
+  Help: "FAQs and support",
+  Contact: "Reach out to our team",
+};
+
 export default function Navbar() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname();
 
-  // Handle scroll effect
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 16);
+    handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Prevent body scroll when menu is open
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "";
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
 
-  const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "About", href: "/about", },
-    { name: "Lectures", href: "/lectures", },
-    { name: "Events", href: "/events", },
-    { name: "Blog", href: "/blog", },
-    { name: "Help", href: "/help", },
-    { name: "Contact", href: "/contact"}
-  ];
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
+  const isActive = (href) =>
+    pathname === href || (href !== "/" && pathname.startsWith(href));
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "bg-primary/95 backdrop-blur-xl shadow-lg shadow-black/20"
-            : "bg-primary/80 backdrop-blur-md"
-        } border-b border-gray-800/50`}
-      >
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex items-center justify-between h-16 sm:h-20">
-            
+      <header className="fixed inset-x-0 top-0 z-40 px-3 pt-3 sm:px-5 sm:pt-4">
+        <div
+          className={`mx-auto max-w-7xl rounded-2xl border transition-all duration-300 ${
+            scrolled
+              ? "border-[#E9DDFD] bg-white/90 shadow-[0_18px_50px_rgba(76,29,149,0.12)] backdrop-blur-2xl"
+              : "border-white/80 bg-white/75 shadow-[0_10px_35px_rgba(76,29,149,0.06)] backdrop-blur-xl"
+          }`}
+        >
+          <nav className="flex h-16 items-center justify-between gap-3 px-4 sm:h-20 sm:px-6">
             {/* Logo */}
-            <Link 
-              href="/" 
-              className="flex items-center gap-2 sm:gap-3 group relative z-50"
+            <Link
+              href="/"
               onClick={() => setIsOpen(false)}
+              className="group relative z-10 flex items-center gap-3"
             >
-              <div className="relative">
+              <div className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl border border-[#F0E2B6] bg-gradient-to-br from-white via-[#FCF8ED] to-[#F7F1FF] shadow-[0_8px_24px_rgba(212,160,23,0.18)] transition-transform duration-300 group-hover:scale-[1.03]">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,160,23,0.18),transparent_38%),radial-gradient(circle_at_bottom_left,rgba(91,33,182,0.12),transparent_40%)]" />
                 <Image
                   src="/logo1.png"
-                  alt="Sibgahtullah Logo"
-                  width={40}
-                  height={40}
-                  className="sm:w-[45px] sm:h-[45px] object-contain drop-shadow-[0_0_10px_rgba(245,166,35,0.5)] group-hover:drop-shadow-[0_0_15px_rgba(245,166,35,0.7)] transition-all duration-300"
+                  alt="Sibgahtullah Islamic Foundation"
+                  width={34}
+                  height={34}
+                  className="relative z-10 object-contain"
                 />
-                {/* Pulse ring on hover */}
-                <span className="absolute inset-0 rounded-full bg-gold/20 scale-0 group-hover:scale-150 opacity-0 group-hover:opacity-100 transition-all duration-500"></span>
               </div>
 
-              <div className="flex flex-col">
-                <span className="text-xs sm:text-sm font-bold text-gold tracking-wide">
-                  SIBGAHTULLAH ISLAMIC FOUNDATION
-                </span>
-                <span className="text-[10px] sm:text-xs text-gray-400 -mt-1 hidden xs:block">
+              <div className="hidden min-[420px]:block">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#C89B3C]">
+                  Sibgahtullah
+                </p>
+                <p className="text-sm font-bold tracking-tight text-[#3B136B] sm:text-base">
                   Islamic Foundation
-                </span>
+                </p>
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-1 xl:gap-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 group ${
-                    pathname === link.href
-                      ? "text-gold bg-gold/10"
-                      : "text-gray-300 hover:text-gold hover:bg-gold/5"
-                  }`}
-                >
-                  {link.name}
-                  
-                  {/* Active indicator */}
-                  {pathname === link.href && (
-                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-gold rounded-full"></span>
-                  )}
-                  
-                  {/* Hover underline */}
-                  <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-gold transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              ))}
+            {/* Desktop Nav */}
+            <div className="hidden items-center rounded-full border border-[#EEE7FA] bg-[#FAF8FF]/90 p-1 shadow-sm lg:flex">
+              {navLinks.map((link) => {
+                const active = isActive(link.href);
+
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={`group relative rounded-full px-4 py-2.5 text-sm font-medium transition-all duration-300 xl:px-5 ${
+                      active
+                        ? "bg-white text-[#4C1D95] shadow-[0_8px_20px_rgba(91,33,182,0.10)]"
+                        : "text-[#6F618A] hover:bg-white/80 hover:text-[#4C1D95]"
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      {link.name}
+                      {active && (
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#D4A017]" />
+                      )}
+                    </span>
+
+                    <span
+                      className={`absolute bottom-1 left-4 right-4 h-0.5 rounded-full bg-gradient-to-r from-[#5B21B6] to-[#D4A017] transition-transform duration-300 ${
+                        active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                      }`}
+                    />
+                  </Link>
+                );
+              })}
             </div>
 
-            {/* Right Side Actions */}
-            <div className="flex items-center gap-3 sm:gap-4">
-              
-              {/* Sponsor Button - Desktop */}
+            {/* Right Side */}
+            <div className="flex items-center gap-3">
               <Link
                 href="/sponsorship"
-                className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-gold to-yellow-600 text-black px-5 py-2.5 rounded-lg text-sm font-bold hover:shadow-[0_0_25px_rgba(245,166,35,0.4)] transition-all duration-300 hover:scale-105 group"
+                className="hidden sm:inline-flex items-center gap-2 rounded-full border border-[#E9D59C] bg-gradient-to-r from-[#FFF8E7] to-[#FFF1C9] px-5 py-2.5 text-sm font-semibold text-[#6C4A00] shadow-[0_12px_28px_rgba(212,160,23,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(212,160,23,0.24)]"
               >
-                <span>Sponsor</span>
-                <svg 
-                  className="w-4 h-4 group-hover:translate-x-1 transition-transform" 
-                  fill="none" 
-                  stroke="currentColor" 
+                <span>Become a Sponsor</span>
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
                 </svg>
               </Link>
 
-              {/* Sponsor Button - Mobile (Icon only) */}
-              <Link
-                href="/sponsorship"
-                className="sm:hidden flex items-center justify-center w-10 h-10 bg-gold text-black rounded-lg font-bold hover:opacity-90 transition-opacity"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </Link>
-
-              {/* Hamburger Menu Button */}
+              {/* Mobile menu button */}
               <button
+                type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="lg:hidden relative w-10 h-10 flex items-center justify-center text-gold focus:outline-none group"
                 aria-label="Toggle menu"
+                aria-expanded={isOpen}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#E9DDFD] bg-white text-[#4C1D95] shadow-sm transition-all duration-300 hover:border-[#E9D59C] hover:text-[#D4A017] lg:hidden"
               >
-                <div className="w-6 h-5 flex flex-col justify-between">
+                <div className="flex h-5 w-5 flex-col justify-between">
                   <span
-                    className={`w-full h-0.5 bg-gold rounded-full transition-all duration-300 ${
-                      isOpen ? "rotate-45 translate-y-2" : ""
+                    className={`h-0.5 w-full rounded-full bg-current transition-all duration-300 ${
+                      isOpen ? "translate-y-[9px] rotate-45" : ""
                     }`}
-                  ></span>
+                  />
                   <span
-                    className={`w-full h-0.5 bg-gold rounded-full transition-all duration-300 ${
+                    className={`h-0.5 w-full rounded-full bg-current transition-all duration-300 ${
                       isOpen ? "opacity-0" : ""
                     }`}
-                  ></span>
+                  />
                   <span
-                    className={`w-full h-0.5 bg-gold rounded-full transition-all duration-300 ${
-                      isOpen ? "-rotate-45 -translate-y-2" : ""
+                    className={`h-0.5 w-full rounded-full bg-current transition-all duration-300 ${
+                      isOpen ? "-translate-y-[9px] -rotate-45" : ""
                     }`}
-                  ></span>
+                  />
                 </div>
               </button>
             </div>
-          </div>
-        </nav>
+          </nav>
+        </div>
       </header>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile overlay */}
       <div
-        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300 ${
-          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        className={`fixed inset-0 z-50 bg-[#2B0F46]/15 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
+          isOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         onClick={() => setIsOpen(false)}
-      ></div>
+      />
 
-      {/* Mobile Menu Slide-in Panel */}
-      <div
-        className={`fixed top-0 right-0 bottom-0 w-full sm:w-80 bg-gradient-to-b from-primary via-primary to-dark z-40 lg:hidden transform transition-transform duration-300 ease-out ${
+      {/* Mobile drawer */}
+      <aside
+        className={`fixed right-0 top-0 z-[60] h-screen w-full max-w-sm border-l border-[#EEE2C2] bg-white/95 shadow-[0_20px_60px_rgba(76,29,149,0.18)] backdrop-blur-2xl transition-transform duration-300 lg:hidden ${
           isOpen ? "translate-x-0" : "translate-x-full"
-        } shadow-2xl border-l border-gold/20`}
+        }`}
       >
-        {/* Mobile Menu Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gold/10">
-          <div className="flex items-center gap-3">
-            <Image
-              src="/logo1.png"
-              alt="Logo"
-              width={35}
-              height={35}
-              className="object-contain drop-shadow-[0_0_10px_rgba(245,166,35,0.5)]"
-            />
-            <span className="text-sm font-bold text-gold">MENU</span>
-          </div>
-          <button
-            onClick={() => setIsOpen(false)}
-            className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gold transition-colors"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
+        <div className="flex h-full flex-col">
+          {/* Drawer header */}
+          <div className="flex items-center justify-between border-b border-[#F1EAFB] px-5 py-5">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[#F0E2B6] bg-gradient-to-br from-white via-[#FCF8ED] to-[#F7F1FF] shadow-[0_8px_20px_rgba(212,160,23,0.15)]">
+                <Image
+                  src="/logo1.png"
+                  alt="Sibgahtullah Islamic Foundation"
+                  width={30}
+                  height={30}
+                  className="object-contain"
+                />
+              </div>
 
-        {/* Mobile Navigation Links */}
-        <nav className="flex flex-col p-4 space-y-1 overflow-y-auto h-[calc(100vh-180px)]">
-          {navLinks.map((link, index) => (
-            <Link
-              key={link.name}
-              href={link.href}
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#C89B3C]">
+                  Navigation
+                </p>
+                <p className="text-sm font-bold text-[#3B136B]">
+                  Explore the site
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
               onClick={() => setIsOpen(false)}
-              className={`flex items-center gap-4 px-5 py-4 rounded-xl text-base font-medium transition-all duration-300 ${
-                pathname === link.href
-                  ? "bg-gold/20 text-gold border border-gold/30 shadow-lg shadow-gold/10"
-                  : "text-gray-300 hover:bg-gold/5 hover:text-gold border border-transparent"
-              }`}
-              style={{
-                animationDelay: `${index * 50}ms`,
-                animation: isOpen ? "slideInRight 0.3s ease-out" : "none",
-              }}
+              aria-label="Close menu"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#F1EAFB] text-[#7A63A8] transition-colors hover:text-[#4C1D95]"
             >
-              <span className="text-2xl">{link.icon}</span>
-              <span>{link.name}</span>
-              {pathname === link.href && (
-                <span className="ml-auto w-2 h-2 bg-gold rounded-full animate-pulse"></span>
-              )}
-            </Link>
-          ))}
-        </nav>
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
 
-        {/* Mobile Menu Footer */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-dark to-transparent border-t border-gold/10">
-          <Link
-            href="/sponsorship"
-            onClick={() => setIsOpen(false)}
-            className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-gold to-yellow-600 text-black px-6 py-4 rounded-xl font-bold text-base hover:shadow-[0_0_25px_rgba(245,166,35,0.4)] transition-all duration-300"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>Become a Sponsor</span>
-          </Link>
-          <p className="text-center text-xs text-gray-500 mt-3">
-            Every contribution makes a difference ✨
-          </p>
+          {/* Mobile links */}
+          <nav className="flex-1 overflow-y-auto px-5 py-6">
+            <div className="space-y-2">
+              {navLinks.map((link, index) => {
+                const active = isActive(link.href);
+
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className={`group flex items-center justify-between rounded-2xl border px-4 py-4 transition-all duration-300 ${
+                      active
+                        ? "border-[#E7DAFF] bg-[#F7F3FF] text-[#4C1D95] shadow-[0_10px_30px_rgba(91,33,182,0.08)]"
+                        : "border-transparent bg-white text-[#6F618A] hover:border-[#F0E8FB] hover:bg-[#FAF8FF] hover:text-[#4C1D95]"
+                    }`}
+                  >
+                    <div className="flex items-center gap-4">
+                      <span
+                        className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold ${
+                          active
+                            ? "bg-white text-[#D4A017] shadow-sm"
+                            : "bg-[#FAF6E8] text-[#C89B3C]"
+                        }`}
+                      >
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+
+                      <div>
+                        <p className="text-base font-semibold">{link.name}</p>
+                        <p className="text-xs text-[#9A8BB8]">
+                          {linkDescriptions[link.name]}
+                        </p>
+                      </div>
+                    </div>
+
+                    <svg
+                      className={`h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 ${
+                        active ? "text-[#D4A017]" : "text-[#CAB7E8]"
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </Link>
+                );
+              })}
+            </div>
+          </nav>
+
+          {/* Drawer footer */}
+          <div className="border-t border-[#F1EAFB] p-5">
+            <div className="rounded-3xl border border-[#F0E2B6] bg-[linear-gradient(135deg,#FFFDF8_0%,#FAF6FF_100%)] p-5 shadow-[0_15px_35px_rgba(76,29,149,0.06)]">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C89B3C]">
+                Support the mission
+              </p>
+              <h3 className="mt-2 text-lg font-semibold text-[#3B136B]">
+                Help us grow the impact
+              </h3>
+              <p className="mt-1 text-sm leading-6 text-[#7B6B98]">
+                Your sponsorship helps lectures, events, and community programs
+                reach more people.
+              </p>
+
+              <Link
+                href="/sponsorship"
+                onClick={() => setIsOpen(false)}
+                className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#4C1D95] px-4 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#3B136B]"
+              >
+                <span>Become a Sponsor</span>
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
-
-      {/* Add keyframes for slide-in animation */}
-      <style jsx>{`
-        @keyframes slideInRight {
-          from {
-            opacity: 0;
-            transform: translateX(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-      `}</style>
+      </aside>
     </>
   );
 }

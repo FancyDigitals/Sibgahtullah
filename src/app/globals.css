@@ -4,7 +4,7 @@
 
 /* Global styling */
 body {
-  @apply bg-primary text-white font-sans;
+  @apply bg-white text-purple-900 font-sans;
 }
 
 /* Smooth look */
@@ -12,11 +12,24 @@ section {
   @apply relative;
 }
 
+/* Default heading / brand text helpers */
+h1, h2, h3, h4, h5, h6 {
+  @apply text-purple-800;
+}
+
+a {
+  @apply text-yellow-600 transition-colors duration-200;
+}
+
+a:hover {
+  @apply text-purple-700;
+}
+
 /* Premium popup scrollbar */
 
 .popup-scrollbar {
   scrollbar-width: auto;
-  scrollbar-color: #F5A623 rgba(255,255,255,0.05);
+  scrollbar-color: #D4A017 #F3F4F6;
 }
 
 /* Chrome, Edge, Safari */
@@ -25,27 +38,27 @@ section {
 }
 
 .popup-scrollbar::-webkit-scrollbar-track {
-  background: rgba(255,255,255,0.04);
+  background: #F3F4F6;
   border-radius: 999px;
 }
 
 .popup-scrollbar::-webkit-scrollbar-thumb {
   background: linear-gradient(
     to bottom,
-    #F8C15C,
-    #F5A623,
-    #D68A00
+    #E6C15A,
+    #D4A017,
+    #B8860B
   );
   border-radius: 999px;
-  border: 3px solid #0A0014;
+  border: 3px solid #ffffff;
 }
 
 .popup-scrollbar::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(
     to bottom,
-    #FFD27A,
-    #F5A623,
-    #C97C00
+    #F0D36B,
+    #D4A017,
+    #9E6F00
   );
 }
 
