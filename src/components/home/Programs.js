@@ -81,16 +81,6 @@ export default function Programs() {
       <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-8">
         {/* Heading */}
         <div className="mx-auto max-w-3xl text-center">
-          <div
-            className={`inline-flex items-center gap-2 rounded-full border border-[#E9DDFD] bg-[#FAF7FF] px-4 py-2 text-sm font-medium text-[#6B21A8] shadow-sm transition-all duration-700 ${
-              isLoaded
-                ? "translate-y-0 opacity-100"
-                : "translate-y-6 opacity-0"
-            }`}
-          >
-            <span className="h-2 w-2 rounded-full bg-[#D4A017]" />
-            Building lives through purpose
-          </div>
 
           <h2 className="mt-6 text-4xl font-semibold tracking-tight text-[#3B136B] sm:text-5xl lg:text-6xl">
             <span

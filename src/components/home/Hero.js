@@ -42,21 +42,6 @@ export default function Hero() {
               Upcoming Events
             </Link>
           </div>
-
-          <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-[#7B6B98]">
-            <div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#D4A017]" />
-              Weekly lectures
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#D4A017]" />
-              Community events
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#D4A017]" />
-              Faith-centered learning
-            </div>
-          </div>
         </div>
 
         {/* Right Video Frame */}
