@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useParams } from "next/navigation";
 import { lectures } from "@/data/lectures";
 import Link from "next/link";
@@ -71,14 +71,25 @@ const languages = [
   { code: "ig", label: "IG", name: "Igbo" },
 ];
 
-/* ─── Local video player with subtitle switching ─── */
+/* ─── Types ─── */
 
-function LocalVideoPlayer({ videoUrl, slug }) {
-  const videoRef = useRef(null);
-  const [currentLang, setCurrentLang] = useState("en");
-  const [isPlaying, setIsPlaying] = useState(false);
+interface LocalVideoPlayerProps {
+  videoUrl: string;
+  slug: string;
+}
 
-  const switchLang = (code, e) => {
+interface YoutubePlayerProps {
+  videoId: string;
+}
+
+/* ─── Local video player ─── */
+
+function LocalVideoPlayer({ videoUrl, slug }: LocalVideoPlayerProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [currentLang, setCurrentLang] = useState<string>("en");
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
+  const switchLang = (code: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     if (!videoRef.current) return;
     const tracks = videoRef.current.textTracks;
@@ -102,12 +113,8 @@ function LocalVideoPlayer({ videoUrl, slug }) {
 
   return (
     <div className="relative aspect-video overflow-hidden rounded-[1.5rem] bg-[#F7F3FF]">
-      {/* Thumbnail overlay */}
       {!isPlaying && (
-        <div
-          className="absolute inset-0 z-20 cursor-pointer"
-          onClick={handlePlay}
-        >
+        <div className="absolute inset-0 z-20 cursor-pointer" onClick={handlePlay}>
           <div className="absolute inset-0 bg-gradient-to-t from-[#1F0D36]/70 via-[#1F0D36]/15 to-transparent" />
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="relative">
@@ -120,7 +127,6 @@ function LocalVideoPlayer({ videoUrl, slug }) {
         </div>
       )}
 
-      {/* Language switcher — always visible */}
       <div className="absolute bottom-4 right-4 z-30 flex gap-1.5 rounded-full border border-white/20 bg-black/30 px-2.5 py-1.5 backdrop-blur-md">
         {languages.map((lang) => (
           <button
@@ -138,7 +144,6 @@ function LocalVideoPlayer({ videoUrl, slug }) {
         ))}
       </div>
 
-      {/* Video element */}
       <video
         ref={videoRef}
         className="h-full w-full object-cover"
@@ -148,56 +153,26 @@ function LocalVideoPlayer({ videoUrl, slug }) {
         onEnded={() => setIsPlaying(false)}
       >
         <source src={videoUrl} type="video/mp4" />
-        <track
-          src={`/subtitles/${slug}.en.vtt`}
-          kind="subtitles"
-          srcLang="en"
-          label="English"
-          default
-        />
-        <track
-          src={`/subtitles/${slug}.ha.vtt`}
-          kind="subtitles"
-          srcLang="ha"
-          label="Hausa"
-        />
-        <track
-          src={`/subtitles/${slug}.yo.vtt`}
-          kind="subtitles"
-          srcLang="yo"
-          label="Yoruba"
-        />
-        <track
-          src={`/subtitles/${slug}.ig.vtt`}
-          kind="subtitles"
-          srcLang="ig"
-          label="Igbo"
-        />
+        <track src={`/subtitles/${slug}.en.vtt`} kind="subtitles" srcLang="en" label="English" default />
+        <track src={`/subtitles/${slug}.ha.vtt`} kind="subtitles" srcLang="ha" label="Hausa" />
+        <track src={`/subtitles/${slug}.yo.vtt`} kind="subtitles" srcLang="yo" label="Yoruba" />
+        <track src={`/subtitles/${slug}.ig.vtt`} kind="subtitles" srcLang="ig" label="Igbo" />
       </video>
     </div>
   );
 }
 
-/* ─── YouTube player with language switcher ─── */
+/* ─── YouTube player ─── */
 
-function YoutubePlayer({ videoId }) {
-  const [play, setPlay] = useState(false);
-  const [currentLang, setCurrentLang] = useState("en");
+function YoutubePlayer({ videoId }: YoutubePlayerProps) {
+  const [play, setPlay] = useState<boolean>(false);
+  const [currentLang, setCurrentLang] = useState<string>("en");
 
-  /* 
-    YouTube auto-captions:
-    - ?cc_load_policy=1 forces captions on
-    - &cc_lang_pref=LANG sets preferred language
-    - YouTube will auto-translate if the video has auto-captions enabled
-    - If the video has manual captions in specific languages those take priority
-  */
   const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&cc_load_policy=1&cc_lang_pref=${currentLang}&hl=${currentLang}&rel=0`;
-
   const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-  const switchLang = (code) => {
+  const switchLang = (code: string) => {
     setCurrentLang(code);
-    /* If already playing we force a re-render via key by toggling play */
     if (play) {
       setPlay(false);
       setTimeout(() => setPlay(true), 50);
@@ -206,20 +181,11 @@ function YoutubePlayer({ videoId }) {
 
   return (
     <div className="relative aspect-video overflow-hidden rounded-[1.5rem] bg-[#F7F3FF]">
-      {/* Thumbnail */}
       {!play && (
-        <div
-          className="absolute inset-0 z-20 cursor-pointer"
-          onClick={() => setPlay(true)}
-        >
-          <img
-            src={thumbnail}
-            alt="Lecture thumbnail"
-            className="h-full w-full object-cover"
-          />
+        <div className="absolute inset-0 z-20 cursor-pointer" onClick={() => setPlay(true)}>
+          <img src={thumbnail} alt="Lecture thumbnail" className="h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#1F0D36]/70 via-[#1F0D36]/15 to-transparent" />
 
-          {/* Play button */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="relative">
               <div className="absolute inset-0 h-20 w-20 animate-ping rounded-full bg-white/15" />
@@ -229,13 +195,11 @@ function YoutubePlayer({ videoId }) {
             </div>
           </div>
 
-          {/* YouTube badge */}
           <div className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full border border-white/20 bg-black/30 px-3 py-1.5 text-[11px] font-medium text-white backdrop-blur-md">
             <YoutubeIcon />
             YouTube
           </div>
 
-          {/* Language pre-selector */}
           <div className="absolute bottom-4 left-4 z-30">
             <div className="flex items-center gap-1.5 rounded-full border border-white/20 bg-black/30 px-2.5 py-1.5 text-[11px] text-white/70 backdrop-blur-md">
               <SubtitleIcon />
@@ -243,10 +207,7 @@ function YoutubePlayer({ videoId }) {
               {languages.map((lang) => (
                 <button
                   key={lang.code}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    switchLang(lang.code);
-                  }}
+                  onClick={(e) => { e.stopPropagation(); switchLang(lang.code); }}
                   title={lang.name}
                   className={`rounded-full px-2.5 py-1 font-semibold transition ${
                     currentLang === lang.code
@@ -262,7 +223,6 @@ function YoutubePlayer({ videoId }) {
         </div>
       )}
 
-      {/* iFrame — key forces full remount when lang changes */}
       {play && (
         <iframe
           key={`${videoId}-${currentLang}`}
@@ -274,7 +234,6 @@ function YoutubePlayer({ videoId }) {
         />
       )}
 
-      {/* Language switcher overlay when playing */}
       {play && (
         <div className="absolute bottom-16 right-4 z-30 flex gap-1.5 rounded-full border border-white/20 bg-black/30 px-2.5 py-1.5 backdrop-blur-md">
           {languages.map((lang) => (
@@ -304,7 +263,7 @@ export default function LectureDetailPage() {
   const slug = params.slug as string;
   const lecture = lectures.find((l) => l.slug === slug);
 
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<boolean>(false);
 
   const handleShare = async () => {
     const url = window.location.href;
@@ -321,7 +280,6 @@ export default function LectureDetailPage() {
     }
   };
 
-  /* ── Not found ── */
   if (!lecture) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white px-6">
@@ -331,16 +289,9 @@ export default function LectureDetailPage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
             </svg>
           </div>
-          <h2 className="mt-6 text-2xl font-semibold text-[#3B136B]">
-            Lecture not found
-          </h2>
-          <p className="mt-2 text-sm text-[#6F618A]">
-            This lecture may have been moved or removed.
-          </p>
-          <Link
-            href="/lectures"
-            className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-[#4C1D95] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#3B136B]"
-          >
+          <h2 className="mt-6 text-2xl font-semibold text-[#3B136B]">Lecture not found</h2>
+          <p className="mt-2 text-sm text-[#6F618A]">This lecture may have been moved or removed.</p>
+          <Link href="/lectures" className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-[#4C1D95] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#3B136B]">
             <ArrowLeftIcon />
             Back to Lectures
           </Link>
@@ -358,7 +309,6 @@ export default function LectureDetailPage() {
 
   return (
     <main className="relative overflow-hidden bg-white text-[#3B136B]">
-      {/* Ambient background */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute -left-20 top-20 h-72 w-72 rounded-full bg-[#F3E8FF] opacity-70 blur-3xl" />
         <div className="absolute bottom-40 right-0 h-72 w-72 rounded-full bg-[#FFF5D9] opacity-60 blur-3xl" />
@@ -376,7 +326,7 @@ export default function LectureDetailPage() {
             Back to Lectures
           </Link>
 
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#E9DDFD] bg-[#FAF7FF] px-4 py-2 text-sm font-medium text-[#6B21A8] shadow-sm ml-3">
+          <div className="ml-3 inline-flex items-center gap-2 rounded-full border border-[#E9DDFD] bg-[#FAF7FF] px-4 py-2 text-sm font-medium text-[#6B21A8] shadow-sm">
             <span className="h-2 w-2 rounded-full bg-[#D4A017]" />
             {lecture.category}
           </div>
@@ -385,7 +335,6 @@ export default function LectureDetailPage() {
             {lecture.title}
           </h1>
 
-          {/* Meta row */}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             {metaItems.map((item, i) => (
               <span
@@ -398,7 +347,6 @@ export default function LectureDetailPage() {
             ))}
           </div>
 
-          {/* Share */}
           <button
             onClick={handleShare}
             className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#EEE7FA] bg-white px-4 py-2 text-xs font-medium text-[#6F618A] transition hover:border-[#E9D59C] hover:text-[#4C1D95]"
@@ -414,9 +362,7 @@ export default function LectureDetailPage() {
         <div className="mx-auto max-w-5xl px-6">
           <div className="relative">
             <div className="absolute -inset-5 rounded-[2.5rem] bg-[radial-gradient(circle_at_top_left,rgba(91,33,182,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(212,160,23,0.16),transparent_35%)] blur-2xl" />
-
             <div className="relative rounded-[2rem] border border-[#E9DDFD] bg-white/85 p-3 shadow-[0_25px_80px_rgba(76,29,149,0.14)] backdrop-blur-xl">
-              {/* Frame bar */}
               <div className="flex items-center gap-2 px-2 pb-3">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#E9DDFD]" />
                 <span className="h-2.5 w-2.5 rounded-full bg-[#F3E8FF]" />
@@ -428,28 +374,21 @@ export default function LectureDetailPage() {
               </div>
 
               {lecture.platform === "local" ? (
-                <LocalVideoPlayer videoUrl={lecture.videoUrl} slug={slug} />
+                <LocalVideoPlayer videoUrl={lecture.videoUrl as string} slug={slug} />
               ) : (
-                <YoutubePlayer videoId={lecture.videoId} />
+                <YoutubePlayer videoId={lecture.videoId as string} />
               )}
             </div>
           </div>
 
-          {/* Subtitle note */}
           <div className="mt-4 flex items-start gap-2 rounded-2xl border border-[#E9DDFD] bg-[#FAF7FF] px-4 py-3">
             <SubtitleIcon />
             <p className="text-xs leading-6 text-[#6F618A]">
-              <span className="font-semibold text-[#4C1D95]">
-                Multi-language subtitles available.
-              </span>{" "}
-              Select{" "}
-              <span className="font-medium text-[#C89B3C]">EN · HA · YO · IG</span>{" "}
-              from the language switcher on the video.
+              <span className="font-semibold text-[#4C1D95]">Multi-language subtitles available.</span>{" "}
+              Select <span className="font-medium text-[#C89B3C]">EN · HA · YO · IG</span> from the
+              language switcher on the video.
               {lecture.platform === "youtube" && (
-                <span>
-                  {" "}YouTube will auto-translate captions if the video supports it —
-                  switch language before or during playback.
-                </span>
+                <span> YouTube will auto-translate captions if the video supports it.</span>
               )}
             </p>
           </div>
@@ -460,35 +399,25 @@ export default function LectureDetailPage() {
       <section className="relative pb-24">
         <div className="mx-auto max-w-4xl px-6">
           <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
-            {/* Main content */}
             <div className="rounded-[1.75rem] border border-[#EEE7FA] bg-white/85 p-7 shadow-[0_20px_50px_rgba(76,29,149,0.08)] backdrop-blur-xl sm:p-8">
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C89B3C]">
                 About this Lecture
               </p>
-              <h2 className="mt-3 text-2xl font-semibold text-[#3B136B]">
-                {lecture.title}
-              </h2>
-
+              <h2 className="mt-3 text-2xl font-semibold text-[#3B136B]">{lecture.title}</h2>
               <p className="mt-5 text-base leading-8 text-[#6F618A]">
-                {lecture.desc ||
-                  "This lecture explores key insights into faith, knowledge, and personal development. Tune in to gain a deeper understanding of Islamic principles and their practical applications in everyday life."}
+                {lecture.desc || "This lecture explores key insights into faith, knowledge, and personal development."}
               </p>
-
-              {/* Progress bar decorative */}
               <div className="mt-8 h-1.5 w-full overflow-hidden rounded-full bg-[#F3EDF9]">
                 <div className="h-full w-2/3 rounded-full bg-gradient-to-r from-[#5B21B6] via-[#7C3AED] to-[#D4A017]" />
               </div>
               <p className="mt-2 text-xs text-[#8C7AAE]">Knowledge retention indicator</p>
             </div>
 
-            {/* Sidebar */}
             <div className="space-y-4">
-              {/* Details card */}
               <div className="rounded-[1.75rem] border border-[#EEE7FA] bg-white/85 p-6 shadow-[0_20px_50px_rgba(76,29,149,0.08)] backdrop-blur-xl">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C89B3C]">
                   Lecture Details
                 </p>
-
                 <div className="mt-5 space-y-4">
                   {[
                     { icon: <UserIcon />, label: "Speaker", value: lecture.speaker },
@@ -504,26 +433,20 @@ export default function LectureDetailPage() {
                         <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#B8A5D5]">
                           {item.label}
                         </p>
-                        <p className="text-sm font-medium text-[#3B136B]">
-                          {item.value}
-                        </p>
+                        <p className="text-sm font-medium text-[#3B136B]">{item.value}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Language card */}
               <div className="rounded-[1.75rem] border border-[#EEE7FA] bg-white/85 p-6 shadow-[0_20px_50px_rgba(76,29,149,0.08)] backdrop-blur-xl">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C89B3C]">
                   Available Subtitles
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {languages.map((lang) => (
-                    <span
-                      key={lang.code}
-                      className="rounded-full border border-[#EEE7FA] bg-[#FAF8FF] px-3 py-1.5 text-xs font-semibold text-[#4C1D95]"
-                    >
+                    <span key={lang.code} className="rounded-full border border-[#EEE7FA] bg-[#FAF8FF] px-3 py-1.5 text-xs font-semibold text-[#4C1D95]">
                       {lang.name}
                     </span>
                   ))}
@@ -533,7 +456,6 @@ export default function LectureDetailPage() {
                 </p>
               </div>
 
-              {/* Back CTA */}
               <Link
                 href="/lectures"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-[#E9DDFD] bg-white px-5 py-3.5 text-sm font-semibold text-[#4C1D95] transition-all hover:border-[#D4A017]/50 hover:shadow-sm"
